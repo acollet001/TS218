@@ -2,7 +2,7 @@ function waveform_params = configure_waveform(varargin)
 % CONFIGURE_WAVEFORM cree une structure de parametres de la parte mise en
 % forme du signal (TX et RX)
 %
-% WAVEFORM_PARAMS = CONFIGURE_WAVEFORM(FE, M, PHI0)
+% WAVEFORM_PARAMS = CONFIGURE_WAVEFORM(FE, FS, M, PHI0)
 % construit WAVEFORM_PARAMS a partir des parametres suivants :
 % FE : frequence d'echantillonnage (canal) - DEFAUT 1e6
 % M : Ordre de la PSK (2, 4 ou 8) - DEFAUT 4
@@ -16,19 +16,25 @@ else
 end
 
 if nargin < 2
-    M=4;
+    Ds=1/Fe;
 else
-    M = varargin{2};
+    Ds = 1/varargin{2};
 end
 
 if nargin < 3
+    M=4;
+else
+    M = varargin{3};
+end
+
+if nargin < 4
     phi0=pi/4;
 else
-    phi0 = varargin{3};
+    phi0 = varargin{4};
 end
 
 waveform_params.sim.Fe = Fe;        % Frequence d'echantillonnage
-waveform_params.sim.Ds = Fe; % Sampling frequency (Hz)
+waveform_params.sim.Ds = Ds; % Sampling frequency (Hz)
 
 Fse = floor(waveform_params.sim.Fe/waveform_params.sim.Ds);
 
